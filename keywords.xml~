@@ -1,0 +1,57 @@
+<Keywords>
+  <CommandList>
+    <Command>
+      <MainWord>move</MainWord>
+      <Synonym>go</Synonym>
+      <Synonym>travel</Synonym>
+      <Synonym>walk</Synonym>
+      <Synonym>run</Synonym>
+    </Command>
+    <Command>
+      <MainWord>use</MainWord>
+      <Synonym>apply</Synonym>
+    </Command>
+    <Command>
+      <MainWord>attack</MainWord>
+      <Synonym>kill</Synonym>
+      <Synonym>slice</Synonym>
+      <Synonym>shoot</Synonym>
+      <Synonym>hit</Synonym>
+      <Synonym>murder</Synonym>
+      <Synonym>fight</Synonym>
+    </Command>
+    <Command>
+      <MainWord>eat</MainWord>
+      <Synonym>nom</Synonym>
+      <Synonym>consume</Synonym>
+      <Synonym>drink</Synonym>
+      <Synonym>devour</Synonym>
+    </Command>
+    <Command>
+      <MainWord>take</MainWord>
+      <Synonym>get</Synonym>
+      <Synonym>grab</Synonym>
+      <Synonym>pick up</Synonym>
+    </Command>
+    <Command>
+      <MainWord>inventory</MainWord>
+      <Synonym>i</Synonym>
+      <Synonym>stuff</Synonym>
+    </Command>
+  </CommandList>
+  <ItemList>
+    <Usable>
+      <Item>sword</Item>
+      <Item>revolver</Item>
+      <Item>key ring</Item>
+    </Usable>
+    <Eatable>
+      <Item>potato</Item>
+      <Item>burrito</Item>
+    </Eatable>
+    <Weapon>
+      <Item>sword</Item>
+      <Item>revolver</Item>
+    </Weapon>
+  </ItemList>
+</Keywords>

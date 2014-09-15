@@ -13,102 +13,74 @@
 #include <cstdlib>
 #include <vector>
 #include <sstream>
+#include <iostream>
+#include "tinyxml2.h"
+#include <new>
 
 using namespace std;
-//Reads all the keywords from appropriate text files (we run a clean
-//establishment) and stores them to coorisponding arrays, helping to organize
-//all the possible combinations of words in the English language.
+
+//Calls setup methods, checks valid memory allocation and runs checks on the
+//content of the parsed data.
 Parser::Parser() {
-  currentFile.open("keywords.txt");
-  if (currentFile.is_open()) {
-    addToVect();
+  if (setupArrays() == MEM_ALLOC_FAIL) {
+    commandWords = NULL;
   }
-}
-
-void Parser::addToVect() {
-  string line;
-  while (getline(currentFile,line)) {
-    vector <int> params = getParams(line);    
-    for (int i = 0; i < params.size(); i++) {
-      for (int j = 0; j < NUMBER_OF_CATEGORIES; j++) {
-	if (params[i] == j) {
-	  words[j].push_back(line.substr(params.size()*2+1,line.length()-(params.size()*2)-1));
-	}
+  else {
+    //Print contents of commandWords
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+	cout << commandWords[i][j] << endl;
       }
     }
   }
 }
 
-vector <int> Parser::getParams(string line) {
-  int i = 0;
-  vector <int> ret;
-  while (line[i] != '\0') {
-    if (line[i] == '@') {
-      i++;
-      ret.push_back((int) line[i]-'0');
+//Reads all the keywords from appropriate xml files (we run a clean
+//establishment) and stores them to coorisponding arrays, helping to organize
+//all the possible combinations and iterations of words in the English 
+//language. Returns a MEM_ALLOC_FAIL if the calls to malloc (new) fail.
+int Parser::setupArrays() {
+  tinyxml2::XMLDocument keywordsXML;
+  keywordsXML.LoadFile("keywords.xml");
+  tinyxml2::XMLNode* commandListRoot = keywordsXML.FirstChild();
+  int numCmds = countChildren(commandListRoot);
+  commandWords = new (nothrow) string*[numCmds];
+  if (commandWords == NULL) {
+    return MEM_ALLOC_FAIL;
+  }
+  tinyxml2::XMLNode* current = commandListRoot->FirstChild();
+  for (int i = 0; i < numCmds; i++) {
+    int numWords = countChildren(current);
+    commandWords[i] = new (nothrow) string[numWords];
+    if (commandWords[i] == NULL) {
+      return MEM_ALLOC_FAIL;
     }
-    i++;
-  }
-  return ret;
-}
-
-string Parser::charToString(char c) {
-  stringstream ss;
-  string s;
-  ss << c;
-  ss >> s;
-  return s;
-}
-
-bool Parser::isValidName(string test,string str) {
-  vector <string> tokens;
-  //split
-  string word;
-  stringstream ss(str);
-  while (getline(ss,word,'%')) {
-    tokens.push_back(word);
-  }
-  for(int i = 0; i < tokens.size(); i++) {
-    if (test == tokens[i]) {
-      return true;
+    //Write to array
+    tinyxml2::XMLNode* child = current->FirstChild();
+    for (int j = 0; j < numWords; j++) {
+      commandWords[i][j] = child->FirstChild()->Value();
+      child = child->NextSibling();
+    }
+    current = current->NextSibling();
+    if (current == NULL) {
+      break;
     }
   }
-  return false;
+  return 0;
 }
 
-vector <string> Parser::parseCommand(string input) {
-  vector <string> tokens;
-  int idxflag = 0;//Starting point for the substring
-  int currentlength = 1;
-  //Test for keywords by starting at the first word and expanding the substring until one
-  //is found or it reaches the null character. Repeats this process from the start of every
-  //word in the command.
-  while (input[idxflag] != '\0') {
-    while (input.length() - idxflag != currentlength) {
-      bool found = false;
-      for (int i = 0; i < NUMBER_OF_CATEGORIES; i++) {
-	for (int j = 0; j < words[i].size(); j++) {
-	  if (isValidName(input.substr(idxflag,currentlength),words[i][j])) {
-	    if (i == DIRECTION) {
-	      tokens.push_back("move");
-	    }
-	    tokens.push_back(getMainWord(words[i][j]));
-	    idxflag = idxflag + currentlength;
-	    currentlength = 1;
-	    found = true;
-	    break;
-	  }
-	}
-	if (found == true) {
-	  break;
-	}
-      }
-      currentlength++;
-    }
-    idxflag++;
+/* Takes an element in an XML file (parent) in the form 
+ * of a XMLNode and returns the value of the number of
+ * sub-elements directly beneath it (children).
+ */
+int Parser::countChildren(tinyxml2::XMLNode* parent) {
+  if (parent == NULL) {
+    return -1;
   }
-}
-  
-string Parser::getMainWord(string str) {
-  return str.substr(0,str.find('%')-1);
+  int count = 0;
+  tinyxml2::XMLNode* current = parent->FirstChild();
+  do {
+    count++;
+  }while (current = current->NextSibling());
+  return count;
 }

@@ -14,8 +14,11 @@
 #include "Parser.h"
 
 int main() {
-  std::cout << "Zuul II v.0.3 Booted.\nType \"help\" if you're in trouble or this is your first time playing" << std::endl;
+  std::cout << "Zuul II v.0.2 Booted.\nType \"help\" if you're in trouble or this is your first time playing" << std::endl;
   Parser* pars = new Parser();
+  string input;
+  cin >> input;
+  vector <string> vect = pars->parseCommand();
   std::cout << "run successful." << std::endl;
   return 0;
 }
