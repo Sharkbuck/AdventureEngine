@@ -19,8 +19,10 @@
 
 using namespace std;
 
-//Calls setup methods, checks valid memory allocation and runs checks on the
-//content of the parsed data.
+
+//establishment) and stores them to coorisponding arrays, helping to organize
+//all the possible combinations and iterations of words in the English 
+//language.
 Parser::Parser() {
   if (setupArrays() == MEM_ALLOC_FAIL) {
     commandWords = NULL;
@@ -35,14 +37,11 @@ Parser::Parser() {
   }
 }
 
-//Reads all the keywords from appropriate xml files (we run a clean
-//establishment) and stores them to coorisponding arrays, helping to organize
-//all the possible combinations and iterations of words in the English 
-//language. Returns a MEM_ALLOC_FAIL if the calls to malloc (new) fail.
+
 int Parser::setupArrays() {
   tinyxml2::XMLDocument keywordsXML;
   keywordsXML.LoadFile("keywords.xml");
-  tinyxml2::XMLNode* commandListRoot = keywordsXML.FirstChild();
+  tinyxml2::XMLNode* commandListRoot = keywordsXML.FirstChildElement("Keywords")->FirstChild();
   int numCmds = countChildren(commandListRoot);
   commandWords = new (nothrow) string*[numCmds];
   if (commandWords == NULL) {
