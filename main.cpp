@@ -16,6 +16,14 @@
 int main() {
   std::cout << "Zuul II v.0.3 Booted.\nType \"help\" if you're in trouble or this is your first time playing" << std::endl;
   Parser* pars = new Parser();
+  std::cout << "\n---------------------------\n>";
+  std::string in;
+  std::getline(std::cin, in);
+  std::vector<std::string> results;
+  pars->parseCommand(in,&results);
+  for (int i = 0; i < results.size(); i++) {
+    std::cout << results[i] << std::endl;
+  }
   std::cout << "run successful." << std::endl;
   return 0;
 }

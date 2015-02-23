@@ -1,3 +1,4 @@
+<Keywords>
 <CommandList>
   <Command>
     <MainWord>move</MainWord>
@@ -30,11 +31,17 @@
     <MainWord>take</MainWord>
     <Synonym>get</Synonym>
     <Synonym>grab</Synonym>
-    <Synonym>pick up</Synonym>
+    <Synonym>pick-up</Synonym>
   </Command>
   <Command>
     <MainWord>inventory</MainWord>
     <Synonym>i</Synonym>
     <Synonym>stuff</Synonym>
   </Command>
+  <Command>
+    <MainWord>help</MainWord>
+    <Synonym>halp</Synonym>
+    <Synonym>save-me</Synonym>
+  </Command>
 </CommandList>
+</Keywords>

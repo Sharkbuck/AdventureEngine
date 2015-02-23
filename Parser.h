@@ -30,7 +30,7 @@
 class Parser {
  public:
   Parser();
-  std::vector <std::string> parseCommand(std::string input);
+  bool parseCommand(std::string input, std::vector<std::string>* tokens);
  private:
   //Copy constructor placed here to avoid making copies of the object #pointers4lyfe
   Parser(Parser &copy);
@@ -43,6 +43,8 @@ class Parser {
   std::string** commandWords;
   int setupArrays();
   int countChildren(tinyxml2::XMLNode* parent);
+  void tokenize(std::string full, std::vector<std::string>* tokens);
+  std::vector<int>* arrDimensions;
 };
 
 #endif
